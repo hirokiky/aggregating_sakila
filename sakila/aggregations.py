@@ -33,7 +33,11 @@ def get_ranking(conditions):
 
 
 def get_line(conditions):
-    c = None
+    c = DBSession.query(
+            sql.func.date(Payment.payment_date).label('date'),
+            sql.func.sum(Payment.amount),
+            ).\
+        filter(conditions).group_by('date')
     return c
 
 
