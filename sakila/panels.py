@@ -1,20 +1,13 @@
 from pyramid.exceptions import NotFound
 from pyramid_layout.panel import panel_config
 
-from .aggregations import (
-    get_total,
-    get_ranking,
-    get_line,
-    get_pie,
-    )
-
 
 @panel_config(
     name='total_table',
     renderer='sakila:templates/panels/total_table.mako')
 def total_table(context, request):
     try:
-        table = get_total(context.conditions)
+        table = context.summary
     except NotFound:
         table = None
     return {'total_table': table}
@@ -25,7 +18,7 @@ def total_table(context, request):
     renderer='sakila:templates/panels/ranking_table.mako')
 def ranking_table(context, request):
     try:
-        ranking = get_ranking(context.conditions)
+        ranking = context.ranking
     except NotFound:
         ranking = None
     return {'ranking_table': ranking}
@@ -35,7 +28,7 @@ def ranking_table(context, request):
     name='line_chart',
     renderer='sakila:templates/panels/line_chart.mako')
 def line_chart(context, request):
-    chart = get_line(context.conditions)
+    chart = context.linechart
     return {'line_chart': chart}
 
 
@@ -43,5 +36,5 @@ def line_chart(context, request):
     name='pie_chart',
     renderer='sakila:templates/panels/pie_chart.mako')
 def pie_chart(context, request):
-    chart = get_pie(context.conditions)
+    chart = context.piechart
     return {'pie_chart': chart}
