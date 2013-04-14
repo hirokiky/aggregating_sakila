@@ -14,6 +14,7 @@ requires = [
     'pyramid_tm',
     'pyramid_debugtoolbar',
     'pyramid_layout',
+    'pyramid_fanstatic',
     'colander',
     'zope.sqlalchemy',
     'waitress',
@@ -45,4 +46,5 @@ setup(name='sakila',
       [console_scripts]
       initialize_sakila_db = sakila.scripts.initializedb:main
       """,
-      )
+      dependency_links = ['http://github.com/hirokiky/js.highcharts/tarball/master#egg=js.highcharts'],
+)
