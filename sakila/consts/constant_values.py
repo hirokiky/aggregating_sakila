@@ -5,15 +5,14 @@ HIGHCHARTS_OPTIONS_BASE = {
         'marginBottom': 25
         },
     'title': {
-        'text': '',
+        'text': 'test',
         'x': -20,
         },
     'xAxis': {
-        'categories': [],
         },
     'yAxis': {
         'title': {
-            'text': '',
+            'text': 'test',
             },
         'plotLines': [{
                 'value': 0,

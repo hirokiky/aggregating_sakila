@@ -1,21 +1,15 @@
-import json
-
-from .handlers import highcharts_linechart_handler
-
-
 class LinechartDataAdapter(object):
     def __init__(self, value):
-        self.value = value
-        self.series, self.categories = tuple(zip(*value))
+        self.value = list(value)
+        if self.value:
+            self.x, self.y = tuple(zip(*self.value))
+        else:
+            self.x = self.y = []
 
     @property
-    def highcharts_json_series(self):
-        json_series = json.dumps(self.series,
-                                 default=highcharts_linechart_handler)
-        return json_series
+    def first_of_x(self):
+        try:
+            return self.x[0]
+        except IndexError:
+            return None
 
-    @property
-    def highcharts_json_categories(self):
-        json_categories = json.dumps(self.categories,
-                                     default=highcharts_linechart_handler)
-        return json_categories
