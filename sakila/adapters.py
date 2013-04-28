@@ -28,6 +28,6 @@ class LinechartDataAdapter(object):
     def first_of_x_as_timestamp(self):
         first_of_x = self.first_of_x
         if first_of_x:
-            return datetime_to_timestamp(first_of_x)
+            return datetime_to_timestamp(first_of_x) * 1000
         else:
             return None
