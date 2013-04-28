@@ -16,18 +16,3 @@ class LinechartDataAdapter(object):
     @property
     def y(self):
         return [float(y) for y in self._y if y is not None]
-
-    @property
-    def first_of_x(self):
-        try:
-            return self.x[0]
-        except IndexError:
-            return None
-
-    @property
-    def first_of_x_as_timestamp(self):
-        first_of_x = self.first_of_x
-        if first_of_x:
-            return datetime_to_timestamp(first_of_x) * 1000
-        else:
-            return None

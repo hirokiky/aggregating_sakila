@@ -14,5 +14,14 @@ def utc_mktime(utc_tuple):
 
 def datetime_to_timestamp(dt):
     """Converts a datetime object to UTC timestamp"""
+    if hasattr(dt, 'timetuple'):
+        return int(utc_mktime(dt.timetuple())) * 1000
+    else:
+        None
 
-    return int(utc_mktime(dt.timetuple()))
+
+def first_of(seq):
+    try:
+        return seq[0]
+    except IndexError:
+        return None
