@@ -12,10 +12,10 @@ class LinechartDataAdapter(object):
     @property
     def x(self):
         return self._x
+
     @property
     def y(self):
         return [float(y) for y in self._y if y is not None]
-
 
     @property
     def first_of_x(self):
