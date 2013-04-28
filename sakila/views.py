@@ -22,7 +22,7 @@ def home(request):
                         pointStart=adapter.first_of_x_as_timestamp)
     chart_config = ChartConfig(renderTo='container')
     xaxis_config = XAxisConfig(type='datetime',
-                                maxZoom= 14 * 24 * 3600000)
+                               maxZoom=len(adapter.x) * 24 * 3600000)
     chart = Chart(chart=chart_config,
                   xAxis=xaxis_config)
     chart.add_series(series)
