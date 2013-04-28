@@ -1,31 +1,30 @@
 #! -*- coding:utf-8 -*-
-import json
-
 from pyramid.view import view_config
 
+from highcharts import Chart
+from highcharts.config_sections import ChartConfig, XAxisConfig
+from highcharts.series import LineSeries
+from js.highcharts import highcharts
+
 from .adapters import LinechartDataAdapter
-from .consts import consts
-from .handlers import highcharts_linechart_handler
-from .utils import datetime_to_timestamp
 
 
 @view_config(
     route_name='home',
     renderer='sakila:templates/home.mako')
 def home(request):
+    highcharts.need()
+
     adapter = LinechartDataAdapter(request.context.linechart)
-    options = consts.HIGHCHARTS_OPTIONS_BASE
 
-    first_of_x = adapter.first_of_x
-    first_of_x = datetime_to_timestamp(first_of_x) if first_of_x else None
+    series = LineSeries(data=adapter.y,
+                        pointInterval=24*3600000,
+                        pointStart=adapter.first_of_x_as_timestamp)
+    chart_config = ChartConfig(renderTo='container')
+    xaxis_config = XAxisConfig(type='datetime',
+                                maxZoom= 14 * 24 * 3600000)
+    chart = Chart(chart=chart_config,
+                  xAxis=xaxis_config)
+    chart.add_series(series)
 
-    options['chart']['renderTo'] = 'container'
-    options['xAxis']['type'] = 'datetime'
-    options['xAxis']['maxZoom'] = '24 * 3600000'
-    options['series'] = [{'name': 'test',
-                          'pointInterval': 24 * 3600 * 1000,
-                          'pointStart': first_of_x,
-                          'data': adapter.y}]
-    options = json.dumps(options, default=highcharts_linechart_handler)
-
-    return {'options': options}
+    return {'options': str(chart)}
