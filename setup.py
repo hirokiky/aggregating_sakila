@@ -13,7 +13,6 @@ requires = [
     'transaction',
     'pyramid_tm',
     'pyramid_debugtoolbar',
-    'pyramid_layout',
     'pyramid_fanstatic',
     'js.highcharts',
     'colander',
@@ -47,5 +46,6 @@ setup(name='sakila',
       [console_scripts]
       initialize_sakila_db = sakila.scripts.initializedb:main
       """,
-      dependency_links = ['git+git://github.com/HireIQ/highcharts-python.git@b626dbdf9084c71dbb1cec27a88058cd1a64a1be']
+      dependency_links=['git+git://github.com/HireIQ/highcharts-python.git@b626dbdf9084c71dbb1cec27a88058cd1a64a1be',
+                        'git+git://github.com/Pylons/pyramid_layout.git@43b9c7947da87cb16997b7782c5f840754dd15ea']
 )
