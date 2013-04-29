@@ -1,6 +1,11 @@
 from pyramid.exceptions import NotFound
 from pyramid_layout.panel import panel_config
 
+from js.highcharts import highcharts
+
+from .adapters import LinechartDataAdapter
+from .charts import daily_linechart_options
+
 
 @panel_config(
     name='total_table',
@@ -25,11 +30,17 @@ def ranking_table(context, request):
 
 
 @panel_config(
-    name='line_chart',
-    renderer='sakila:templates/panels/line_chart.mako')
-def line_chart(context, request):
-    chart = context.linechart
-    return {'line_chart': chart}
+    name='linechart',
+    renderer='sakila:templates/panels/linechart.mako')
+def line_chart(context, request, renderTo='container'):
+    highcharts.need()
+
+    adapter = LinechartDataAdapter(request.context.linechart)
+    options = daily_linechart_options(adapter.x, adapter.y,
+                                      renderTo=renderTo)
+
+    return {'options': options,
+            'renderTo': renderTo}
 
 
 @panel_config(
