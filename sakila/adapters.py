@@ -1,6 +1,3 @@
-from .utils import datetime_to_timestamp
-
-
 class LinechartDataAdapter(object):
     def __init__(self, value):
         self.value = list(value)
