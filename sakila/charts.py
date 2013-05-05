@@ -1,7 +1,10 @@
+import json
+
 from highcharts import Chart
 from highcharts.config_sections import ChartConfig, XAxisConfig
-from highcharts.series import LineSeries
+from highcharts.series import LineSeries, PieSeries
 
+from .encoders import SakilaEncoder
 from .utils import first_of, datetime_to_timestamp
 
 
@@ -17,3 +20,12 @@ def daily_linechart_options(x, y, renderTo='container'):
     chart.add_series(series)
 
     return str(chart)
+
+
+def piechart_options(data, renderTo='container'):
+    series = PieSeries(data=data)
+    chart_config = ChartConfig(renderTo=renderTo)
+    chart = Chart(chart=chart_config)
+    chart.add_series(series)
+
+    return json.dumps(chart, cls=SakilaEncoder)

@@ -3,6 +3,7 @@
     <title>title</title>
   </head>
   <body>
-  ${panel('linechart', 'container')}
+  ${panel('linechart', 'linechart_container')}
+  ${panel('piechart', 'piechart_container')}
   </body>
 </html>

@@ -3,8 +3,8 @@ from pyramid_layout.panel import panel_config
 
 from js.highcharts import highcharts
 
-from .adapters import LinechartDataAdapter
-from .charts import daily_linechart_options
+from .adapters import LinechartDataAdapter, PiechartDataAdapter
+from .charts import daily_linechart_options, piechart_options
 
 
 @panel_config(
@@ -44,8 +44,13 @@ def line_chart(context, request, renderTo='container'):
 
 
 @panel_config(
-    name='pie_chart',
-    renderer='sakila:templates/panels/pie_chart.mako')
-def pie_chart(context, request):
-    chart = context.piechart
-    return {'pie_chart': chart}
+    name='piechart',
+    renderer='sakila:templates/panels/piechart.mako')
+def pie_chart(context, request, renderTo='container'):
+    highcharts.need()
+
+    adapter = PiechartDataAdapter(request.context.piechart)
+    options = piechart_options(adapter.data,
+                               renderTo=renderTo)
+    return {'options': options,
+            'renderTo': renderTo}

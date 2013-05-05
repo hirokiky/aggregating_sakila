@@ -13,3 +13,12 @@ class LinechartDataAdapter(object):
     @property
     def y(self):
         return [float(y) for y in self._y if y is not None]
+
+
+class PiechartDataAdapter(object):
+    def __init__(self, value):
+        self.value = list(value)
+
+    @property
+    def data(self):
+        return self.value
