@@ -72,7 +72,7 @@ class SakilaResource(object):
             join(Payment.rental).\
             join(Rental.inventory).\
             join(Inventory.film).\
-            join(Film.category).\
+            join(Film.categories).\
             filter(self.conditions).group_by(Category.category_id).\
             order_by(sql.desc('total_amount'))
         return c
