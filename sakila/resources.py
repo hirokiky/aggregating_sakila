@@ -9,7 +9,7 @@ from .models import (
     Rental,
     Inventory,
     Film,
-    Category,
+    Language,
     )
 from .validators import ConditionSchema
 
@@ -66,13 +66,13 @@ class SakilaResource(object):
     @property
     def piechart(self):
         c = DBSession.query(
-                Category.name,
+                Language.name,
                 sql.func.sum(Payment.amount).label('total_amount'),
                 ).\
             join(Payment.rental).\
             join(Rental.inventory).\
             join(Inventory.film).\
-            join(Film.categories).\
-            filter(self.conditions).group_by(Category.category_id).\
+            join(Film.language).\
+            filter(self.conditions).group_by(Language.language_id).\
             order_by(sql.desc('total_amount'))
         return c
