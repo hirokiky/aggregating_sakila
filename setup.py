@@ -14,6 +14,7 @@ requires = [
     'pyramid_tm',
     'pyramid_debugtoolbar',
     'pyramid_fanstatic',
+    'js.bootstrap',
     'js.highcharts',
     'colander',
     'zope.sqlalchemy',
