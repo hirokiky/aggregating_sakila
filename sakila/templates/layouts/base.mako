@@ -6,6 +6,7 @@
     <div class="container">
       <div class="row">
         <div class="span2">
+          ${panel('sidebar')}
         </div>
         <div class="span10">
           ${next.body()}
