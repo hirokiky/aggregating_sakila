@@ -1,10 +1,12 @@
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 
-from .adapters import set_adapters
+from .adapters import LinechartHighcharts
+from .interfaces import ILinechart, IHighchart
 from .models import (
     DBSession,
     Base,
+    Payment,
     )
 
 
@@ -21,5 +23,5 @@ def main(global_config, **settings):
     config.scan('.layouts')
     config.scan('.panels')
     config.scan('.views')
-    set_adapters()
+    config.registry.registerAdapter(LinechartHighcharts, (ILinechart,), IHighchart, '')
     return config.make_wsgi_app()

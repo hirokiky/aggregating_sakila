@@ -1,61 +1,42 @@
-from sqlalchemy import sql
-
+from highcharts import Chart
+from highcharts.config_sections import ChartConfig, XAxisConfig
+from highcharts.series import LineSeries
 from js.highcharts import highcharts
-from pyramid.renderers import render
-from zope.component import adapts, getGlobalSiteManager
-from zope.interface import implements
-from .charts import daily_linechart_options
-from .interfaces import IRenderer, ILinechart, IResource
-from .models import Payment
+from zope.interface import implementer
+
+from .interfaces import IHighchart, ILinechart
+from .utils import first_of, datetime_to_timestamp
 
 
-class HighchartsLinechartRenderer(object):
-    implements(IRenderer)
-    adapts(ILinechart)
-
-    renderTo = 'container'
+@implementer(IHighchart)
+class LinechartHighcharts(object):
+    __used_for__ = ILinechart
 
     def __init__(self, context):
         highcharts.need()
-
         self.context = context
 
-        self.options = daily_linechart_options(
-            self.context.getX(),
-            self.context.getY(),
-            renderTo=self.renderTo,
-        )
+    def getOptions(self, renderTo='container'):
+        series = LineSeries(data=self.context.getY(),
+                            pointInterval=24 * 3600000,
+                            pointStart=datetime_to_timestamp(first_of(self.context.getX())))
+        chart_config = ChartConfig(renderTo=renderTo)
+        xaxis_config = XAxisConfig(type='datetime',
+        maxZoom=len(self.context.getX()) * 24 * 3600000)
+        chart = Chart(chart=chart_config,
+                      xAxis=xaxis_config)
+        chart.add_series(series)
 
-    def render(self):
-        result = render(
-            'sakila:templates/renderer/highcharts/linechart.mako',
-            {'options': self.options,
-            'renderTo': self.renderTo})
-        return result
+        return str(chart)
 
 
-class ResourceDailyLinechart(object):
-    implements(ILinechart)
-    adapts(IResource)
-
+@implementer(ILinechart)
+class ListLinechart(object):
     def __init__(self, context):
         self.context = context
-        self.points = self.context.resource.\
-            add_column(sql.func.sum(Payment.amount)).\
-            add_column(sql.func.date(Payment.payment_date).label('date')).\
-            group_by('date').\
-            all()
 
     def getX(self):
-        return [x for y, x in self.points]
+        return [x for y, x in self.context]
 
     def getY(self):
-        return [y for y, x in self.points]
-
-
-def set_adapters():
-    gsm = getGlobalSiteManager()
-    gsm.registerAdapter(ResourceDailyLinechart,
-                        (IResource,), ILinechart, 'daily')
-    gsm.registerAdapter(HighchartsLinechartRenderer,
-                        (ILinechart,), IRenderer, 'highcharts')
+        return [y for y, x in self.context]

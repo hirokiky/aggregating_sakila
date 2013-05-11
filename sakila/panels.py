@@ -1,6 +1,9 @@
 #! -*- coding:utf-8 -*-
 
+from js.highcharts import highcharts
 from pyramid_layout.panel import panel_config
+
+from .interfaces import IHighchart
 
 
 @panel_config(
@@ -15,3 +18,18 @@ def sidebar(context, request):
         (u'売上割合', '#'),
         (u'ランキング', '#'),
     ])
+
+
+@panel_config(
+    name='linechart',
+    renderer='sakila:templates/panels/highcharts/linechart.mako'
+)
+def linechart(context, request, renderTo='container'):
+    highcharts.need()
+
+    reg = request.registry.getAdapter(request.context.linechart,
+                                      IHighchart, '')
+    options = reg.getOptions(renderTo=renderTo)
+
+    return dict(options=options,
+                renderTo=renderTo)

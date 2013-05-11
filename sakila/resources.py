@@ -1,21 +1,14 @@
 from pyramid.exceptions import NotFound
 
 import colander
-import zope.interface
+from sqlalchemy import sql
 
-from .interfaces import IResource
+from .adapters import ListLinechart
 from .models import (
     DBSession,
     Payment,
     )
 from .validators import ConditionSchema
-
-
-class Resource(object):
-    zope.interface.implements(IResource)
-
-    def __init__(self, resource):
-        self.resource = resource
 
 
 class SakilaResource(object):
@@ -35,8 +28,11 @@ class SakilaResource(object):
                (Payment.payment_date < conditions['end_datetime'])
 
     @property
-    def resource(self):
+    def linechart(self):
         resource = DBSession.query().\
-            filter(self.conditions)
-
-        return Resource(resource)
+            add_column(sql.func.sum(Payment.amount)).\
+            add_column(sql.func.date(Payment.payment_date).label('date')).\
+            group_by('date').\
+            filter(self.conditions).\
+            all()
+        return ListLinechart(resource)

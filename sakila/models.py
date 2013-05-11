@@ -1,6 +1,7 @@
 import datetime
 
 import sqlalchemy as sa
+from sqlalchemy import sql
 from sqlalchemy.dialects import mysql
 from sqlalchemy.ext.declarative import declarative_base
 
@@ -158,3 +159,10 @@ class Payment(TimestampMixin, Base):
                              nullable=False)
 
     rental = relationship('Rental')
+
+    @property
+    def linechart(self):
+        return DBSession.query(
+            sql.func.sum(Payment.amount),
+            sql.func.date(Payment.payment_date).label('date')).\
+            group_by('date').all()
