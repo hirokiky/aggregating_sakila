@@ -6,7 +6,6 @@ from .interfaces import ILinechart, IHighchart
 from .models import (
     DBSession,
     Base,
-    Payment,
     )
 
 
