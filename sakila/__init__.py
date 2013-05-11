@@ -1,6 +1,7 @@
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 
+from .adapters import set_adapters
 from .models import (
     DBSession,
     Base,
@@ -20,4 +21,5 @@ def main(global_config, **settings):
     config.scan('.layouts')
     config.scan('.panels')
     config.scan('.views')
+    set_adapters()
     return config.make_wsgi_app()

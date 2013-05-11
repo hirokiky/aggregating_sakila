@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 import time
 
+
 def utc_mktime(utc_tuple):
     """Returns number of seconds elapsed since epoch
     Note that no timezone are taken into consideration.
