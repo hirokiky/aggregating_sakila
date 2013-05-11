@@ -1,11 +1,8 @@
-from highcharts import Chart
-from highcharts.config_sections import ChartConfig, XAxisConfig
-from highcharts.series import LineSeries
 from js.highcharts import highcharts
 from zope.interface import implementer
 
+from .charts import daily_linechart_options
 from .interfaces import IHighchart, ILinechart
-from .utils import first_of, datetime_to_timestamp
 
 
 @implementer(IHighchart)
@@ -17,15 +14,9 @@ class LinechartHighcharts(object):
         self.context = context
 
     def getOptions(self, renderTo='container'):
-        series = LineSeries(data=self.context.getY(),
-                            pointInterval=24 * 3600000,
-                            pointStart=datetime_to_timestamp(first_of(self.context.getX())))
-        chart_config = ChartConfig(renderTo=renderTo)
-        xaxis_config = XAxisConfig(type='datetime',
-        maxZoom=len(self.context.getX()) * 24 * 3600000)
-        chart = Chart(chart=chart_config,
-                      xAxis=xaxis_config)
-        chart.add_series(series)
+        chart = daily_linechart_options(self.context.getX(),
+                                        self.context.getY(),
+                                        renderTo=renderTo)
 
         return str(chart)
 
