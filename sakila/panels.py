@@ -25,8 +25,6 @@ def sidebar(context, request):
     renderer='sakila:templates/panels/highcharts/linechart.mako'
 )
 def linechart(context, request, renderTo='container'):
-    highcharts.need()
-
     linechart = tochart(request, [], name='daily.linechart')
     options = linechart.highchartable
 
