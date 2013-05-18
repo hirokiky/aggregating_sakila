@@ -1,3 +1,5 @@
+import datetime
+
 from pyramid.exceptions import NotFound
 
 import colander
@@ -13,9 +15,13 @@ class SakilaResource(object):
     def period(self):
         s = ConditionSchema().bind()
 
+
         try:
             conditions = s.deserialize(self.request.GET)
+            start_datetime = conditions['start_datetime']
+            end_datetime = conditions['end_datetime']
         except colander.Invalid:
-            raise NotFound
+            end_datetime = datetime.datetime.now()
+            start_datetime = end_datetime - datetime.timedelta(days=7)
 
-        return conditions['start_datetime'], conditions['end_datetime']
+        return start_datetime, end_datetime
