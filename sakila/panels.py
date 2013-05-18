@@ -3,7 +3,7 @@
 from js.highcharts import highcharts
 from pyramid_layout.panel import panel_config
 
-from .interfaces import IHighchart
+from tochart import tochart
 
 
 @panel_config(
@@ -27,9 +27,8 @@ def sidebar(context, request):
 def linechart(context, request, renderTo='container'):
     highcharts.need()
 
-    reg = request.registry.getAdapter(request.context.linechart,
-                                      IHighchart, '')
-    options = reg.getOptions(renderTo=renderTo)
+    linechart = tochart(request, [], name='daily.linechart')
+    options = linechart.highchartable
 
     return dict(options=options,
                 renderTo=renderTo)

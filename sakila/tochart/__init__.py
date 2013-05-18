@@ -1,8 +1,8 @@
-import datetime
-
+from pyramid.interfaces import IRequest
 import venusian
 
 from .interfaces import ILinechart
+from .linechart import Linechart
 
 
 def tochart_config(name='', chart_type='linechart'):
@@ -21,7 +21,7 @@ def set_tochart(config, callable, name="", chart_type='linechart'):
 
     def register():
         reg.registerAdapter(callable,
-                            [datetime.datetime, datetime.datetime],
+                            [IRequest, list],
                             #TODO chart_type -> own Interface.
                             ILinechart,
                             name=name)
@@ -37,4 +37,5 @@ def tochart(request, value, name=''):
     adapted = request.registry.getMultiAdapter([request, value],
                                                ILinechart,
                                                name=name)
-    return adapted
+    chart = Linechart(adapted)
+    return chart
