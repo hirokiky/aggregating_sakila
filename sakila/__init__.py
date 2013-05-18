@@ -1,8 +1,6 @@
 from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 
-from .adapters import LinechartHighcharts
-from .interfaces import ILinechart, IHighchart
 from .models import (
     DBSession,
     Base,
