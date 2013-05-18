@@ -9,6 +9,13 @@ from .models import (
     )
 
 
+def includetochart(config):
+    from tochart import set_tochart
+    config.add_directive('set_tochart',
+                         set_tochart)
+    config.scan('.charts')
+
+
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.
     """
@@ -22,5 +29,7 @@ def main(global_config, **settings):
     config.scan('.layouts')
     config.scan('.panels')
     config.scan('.views')
-    config.registry.registerAdapter(LinechartHighcharts, (ILinechart,), IHighchart, '')
+
+    includetochart(config)
+
     return config.make_wsgi_app()

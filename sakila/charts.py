@@ -2,6 +2,8 @@ from highcharts import Chart
 from highcharts.config_sections import ChartConfig, XAxisConfig
 from highcharts.series import LineSeries
 
+from .tochart import tochart_config
+from .tochart.linechart import Linechart
 from .utils import first_of, datetime_to_timestamp
 
 
@@ -17,3 +19,8 @@ def daily_linechart_options(x, y, renderTo='container'):
     chart.add_series(series)
 
     return str(chart)
+
+
+@tochart_config(name='')
+def daily(request, data):
+    return Linechart(data)
