@@ -8,6 +8,7 @@ from zope.interface import implementer
 from .interfaces import ILinechart
 from .utils import datetime_to_timestamp, first_of
 
+
 @implementer(ILinechart)
 class Linechart(object):
     __used_for__ = list

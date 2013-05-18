@@ -15,7 +15,6 @@ class SakilaResource(object):
     def period(self):
         s = ConditionSchema().bind()
 
-
         try:
             conditions = s.deserialize(self.request.GET)
             start_datetime = conditions['start_datetime']
