@@ -1,9 +1,8 @@
 #! -*- coding:utf-8 -*-
 
-from js.highcharts import highcharts
 from pyramid_layout.panel import panel_config
 
-from tochart import tochart
+from pyramid_tochart import tochart
 
 
 @panel_config(

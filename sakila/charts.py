@@ -4,7 +4,7 @@ from .models import (
     DBSession,
     Payment,
     )
-from .tochart import tochart_config
+from pyramid_tochart import tochart_config
 
 
 @tochart_config(name='daily.linechart',
